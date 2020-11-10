@@ -8,3 +8,4 @@ data = module.exp.readcsv(data_path)
 filelist = module.exp.get_filename_list(dir_path)
 module.exp.outcsv(data, "test", output_path)
 
+print(module.exp.sqrt_mean_square(2, 2))

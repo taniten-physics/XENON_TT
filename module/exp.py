@@ -49,6 +49,14 @@ def outcsv(data, filename, output_path):
     print("save :" + output_path + filename + ".csv\n")
 
 
+#ルート二乗和をとる関数。
+def sqrt_mean_square(a, b):
+    
+    val = np.sqrt(np.square(a) + np.square(b))
+
+    return val
+
+
 class Datas:
 
     def __init__(self):

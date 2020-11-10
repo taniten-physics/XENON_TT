@@ -40,6 +40,15 @@ def readcsv_datas(dir_path):
     return data_list
 
 
+#dataを読み込み，output_pathに出力する関数。
+def outcsv(data, filename, output_path):
+    
+    os.makedirs(output_path, exist_ok=True)
+    np.savetxt(output_path + filename + ".csv", data, delimiter=",")
+
+    print("save :" + output_path + filename + ".csv\n")
+
+
 class Datas:
 
     def __init__(self):
@@ -85,7 +94,7 @@ class Datas:
 
         if attribute.count("FS") == 1:
             self.data_type = "FS"
-        elif attribute.count("Bin") = 1:
+        elif attribute.count("Bin") == 1:
             self.data_type = "Bin"
 
         #CSVからDatas.waveとDatas.dataを設定。FSモードに対応しており，縦に長いデータになる。

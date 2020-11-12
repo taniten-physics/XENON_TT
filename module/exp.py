@@ -57,7 +57,7 @@ def sqrt_mean_square(a, b):
     return val
 
 
-#Datas.data(ndarray)を受け取り，median処理を行った後のDatas.data(ndarray)を返す。フィルタをかけた後のデータを使って，その次の点についてフィルタをかけるようにしている。
+#Datas.data(ndarray)を受け取り，median処理を行った後のDatas.data(ndarray)を返す関数。フィルタをかけた後のデータを使って，その次の点についてフィルタをかけるようにしている。
 def median(data, threshold_num=20, range_num=40):
     
     count = 0
@@ -77,19 +77,44 @@ def median(data, threshold_num=20, range_num=40):
     return np.array(data)
 
 
+#Datasクラスを受け取って，強度のSum（ビニング），波長の平均，誤差のRMSを計算してクラスに代入し直す関数。
+def binning(datas, bin_num=128)
+    
+    if 1024 % bin_num != 0:
+        print("ERROR : bin_num is not appropriate -> ", bin_num)
+        return
+
+    point_num = int(1024/bin_num)
+    intsy_list, wave_list, error_list = [], [], []
+    for i in range(point_num):
+        sum_intsy = np.sum(datas.data[i*bin_num:i*bin_num+(bin_num-1)])
+        mean_wave = np.mean(datas.wave[i*bin_num:i*bin_num+(bin_num-1)])
+        rms_error = np.sqrt(np.sum(np.square(datas.error[i*bin_num:i*bin_num+(bin_num-1)])))
+        intsy_list.append(sum_intsy)
+        wave_list.append(mean_wave)
+        error_list.append(rms_error)
+
+    datas.data = np.array(intsy_list)
+    datas.wave = np.array(wave_list)
+    datas.error = np.array(error_list)
+    datas.name += "Bin" + str(bin_num)
+    datas.BINnum = bin_num
+
+    return datas
+
 class Datas:
 
     def __init__(self):
 
         self.name = None
-        self.data = None
+        self.intsy = None
         self.wave = None
         self.error = None
         self.num = None
         self.source = None
         self.matter = None
         self.center = None
-        self.data_type = None
+        self.intsy_type = None
         self.isError = None
         self.BINnum = None
         self.status = None
@@ -121,16 +146,16 @@ class Datas:
             self.matter = "NaI"
 
         if attribute.count("FS") == 1:
-            self.data_type = "FS"
+            self.intsy_type = "FS"
         elif attribute.count("Bin") == 1:
-            self.data_type = "Bin"
+            self.intsy_type = "Bin"
 
         #CSVからDatas.waveとDatas.dataを設定。FSモードに対応しており，縦に長いデータになる。
         csv = readcsv(data_path + data_name)
-        if self.data_type == "FS":
-            self.data = csv[:, 1:]
+        if self.intsy_type == "FS":
+            self.intsy = csv[:, 1:]
         else:
-            self.data = csv[:, 1]
+            self.intsy = csv[:, 1]
         wave = csv[:, 0]
         self.wave = wave[:1024]
 

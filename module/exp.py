@@ -57,6 +57,26 @@ def sqrt_mean_square(a, b):
     return val
 
 
+#Datas.data(ndarray)を受け取り，median処理を行った後のDatas.data(ndarray)を返す。フィルタをかけた後のデータを使って，その次の点についてフィルタをかけるようにしている。
+def median(data, threshold_num=20, range_num=40):
+    
+    count = 0
+    for i in range(len(data)):
+        j = i % 1024
+        if j <= range_num/2-1:
+            median_val = np.median(data[:range_num])
+        elif i >= 1024-range_num/2:
+            median_val = np.median(data[1023-(range_num-1):])
+        else:
+            median_val = np.median(data[i-range_num//2:i+range_num//2])
+        if data[i] > data[i-1] + threshold_num:
+            data[i] = median_val
+            count += 1
+    print("median: {}/{} are fixed.".format(count, len(data)))
+
+    return np.array(data)
+
+
 class Datas:
 
     def __init__(self):

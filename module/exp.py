@@ -78,7 +78,7 @@ def median(data, threshold_num=20, range_num=40):
 
 
 #Datasクラスを受け取って，強度のSum（ビニング），波長の平均，誤差のRMSを計算してクラスに代入し直す関数。
-def binning(datas, bin_num=128)
+def binning(datas, bin_num=128):
     
     if 1024 % bin_num != 0:
         print("ERROR : bin_num is not appropriate -> ", bin_num)
@@ -178,4 +178,38 @@ class Datas:
             self.status = "bin"
             _num = attribute.index("Bin")
             self.BINnum = int(attribute[_num + 1])
+
+    #横軸:Datas.wave，縦軸:Datas.intsyのグラフをmatplotlibを使用して作成する関数。
+    def plot(self, isLabel=True, label_name=None, isZeroline=False):
+        
+        if isZeroline == True:
+            plt.axhline(0, ls="--", color="lightslategrey", lw=3)
+
+        if isLabel == True:
+            if label_name is None:
+                plt.plot(self.wave, self.intsy, label = self.name)
+                plt.legned()
+                return
+            else:
+                plt.plot(self.wave, self.intsy, label = label_name)
+                plt.legend()
+                return
+        else:
+            plt.plot(self.wave, self.data)
+            return
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

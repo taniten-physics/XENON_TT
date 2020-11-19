@@ -102,6 +102,20 @@ def binning(datas, bin_num=128):
 
     return datas
 
+#Datas(Class)を受け取って，Datas.errorに値を入れたDatas(Class)を返す。エラーは標準偏差にしている。
+def set_BGerror(Datas):
+    
+    error = []
+    mes_num = len(Datas.intsy) // 1024
+    for i in range(mes_num):
+        std = np.std(Datas.intsy[i*1024:(i+1)*1024])
+        error.append([std]*1024)
+    Datas.error = error
+    Datas.inError = True
+    
+    return Datas
+
+
 class Datas:
 
     def __init__(self):
@@ -127,7 +141,7 @@ class Datas:
         self.num = attribute[0]
         self.source = attribute[1]
         self.matter = attribute[2]
-        self.time = sttribute[3]
+        self.time = attribute[3]
 
         if attribute.count("Nothing") == 1:
             self.source = "BG"
